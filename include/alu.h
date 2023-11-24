@@ -18,6 +18,7 @@ class ALU
 {
 public:
     int real_index()const;
+    
     virtual void valid_resize(size_t size) = 0;
     virtual int valid_index()const = 0;
 

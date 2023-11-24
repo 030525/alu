@@ -71,6 +71,27 @@ void CPM_ALU::set_x(const string &code)
 
 void CPM_ALU::set_mq(const string &code)
 {
+    check_code(code);
+
+    char sign = code[0];
+
+    MQ[0] = sign;
+    MQ[MQ.size()-1] = '0';
+
+    int last = code.size() - 1;
+
+    for(int i = MQ.size()-2;i >=1;i--)
+    {
+        if(last > 0)
+        {
+            MQ[i] = code[last--];
+        }
+        else
+        {
+            OF = true;
+            MQ[i] = sign;
+        }
+    }
 }
 
 void CPM_ALU::mul()

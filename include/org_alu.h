@@ -26,10 +26,12 @@ public:
     void set_x(const string & code) override;
     void set_mq(const string & code) override;
 
-    void mul() override;
-    void div() override;
+    /// @brief same sign,direct addtion,different sign |big| - |small|,use acc for num1,x for num2
     void add() override;
     void sub() override;
+    void mul() override;
+    void div() override;
+
 
 private:
     bool SF_ACC = false,SF_MQ=false,SF_X =false;

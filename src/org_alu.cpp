@@ -90,6 +90,7 @@ void ORG_ALU::set_mq(const string &code)
 
 void ORG_ALU::mul()
 {
+
 }
 
 void ORG_ALU::div()
@@ -98,6 +99,26 @@ void ORG_ALU::div()
 
 void ORG_ALU::add()
 {
+    int sum = 0;
+    int overflow = 0;
+
+    for(int i = ACC.size()-1;i>=0;i--)
+    {
+        sum = 0;
+        sum += overflow;
+
+        sum += (ACC[i] - '0');
+        sum += (X[i] - '0');
+
+        ACC[i] = (sum % 2)+'0';
+
+        overflow = sum / 2;
+    }
+
+    if(overflow) 
+    {
+        OF = true;
+    }
 }
 
 void ORG_ALU::sub()

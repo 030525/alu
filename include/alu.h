@@ -8,9 +8,12 @@
 #ifndef _alu_h_
 #define _alu_h_
 
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 #include <stdexcept>
 #include <deque>
 #include <string>
+#include "binary.h"
 
 using namespace std;
 

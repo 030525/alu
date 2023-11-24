@@ -102,10 +102,6 @@ void CPM_ALU::div()
 {
 }
 
-void CPM_ALU::add()
-{
-}
-
 void CPM_ALU::sub()
 {
 }

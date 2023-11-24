@@ -8,6 +8,7 @@
 #ifndef _org_alu_h_
 #define _org_alu_h_
 
+
 #include "alu.h"
 
 class ORG_ALU : public ALU
@@ -36,5 +37,7 @@ public:
 private:
     bool SF_ACC = false,SF_MQ=false,SF_X =false;
 };
+
+
 
 #endif

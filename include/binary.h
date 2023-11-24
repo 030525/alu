@@ -21,4 +21,8 @@ string complement_to_origin(const string & code);
 
 string negative_complement(const string & code,bool & OF);
 
+int origin_to_value(const string & code);
+int opposite_to_value(const string & code);
+int complement_to_value(const string & code);
+
 #endif

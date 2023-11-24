@@ -1,4 +1,4 @@
-#include "binary.h"
+#include "../include/binary.h"
 
 static void check_code(const string & code)
 {

@@ -1,5 +1,4 @@
 #include "../include/alu.h"
-#include "alu.h"
 
 ALU::ALU(size_t size)
 :ACC(size,'0'),MQ(size,'0'),X(size,'0')
@@ -50,5 +49,4 @@ bool ALU::get_of() const
 {
     return OF;
 }
-
 

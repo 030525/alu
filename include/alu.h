@@ -29,9 +29,11 @@ public:
     virtual void set_x(const string & code) = 0;
     virtual void set_mq(const string & code) = 0;
 
-    string get_acc()const;
-    string get_mq()const;
-    string get_x()const;
+    virtual string get_acc_sign()const = 0;
+    virtual string get_mq_sign()const = 0;
+    virtual string get_x_sign()const = 0;
+
+
 
     bool get_cf()const;
     bool get_of()const;
@@ -43,6 +45,10 @@ public:
 
 protected:
     ALU(size_t size);
+
+    string get_acc()const;
+    string get_mq()const;
+    string get_x()const;
 
     deque<char> ACC;
     deque<char> MQ;

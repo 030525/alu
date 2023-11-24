@@ -127,3 +127,30 @@ string negative_complement(const string &code1,bool & OF)
 
     return code;
 }
+
+int origin_to_value(const string &code)
+{
+    long long int pow = 1;
+    long long int sum = 0;
+
+    for(int i = code.size()-1;i>=1;i--)
+    {
+        if(code[i] == '1') sum += pow;
+
+        pow *= 2;
+    }
+
+    if(code[0] == '1') sum = -sum;
+
+    return sum;
+}
+
+int opposite_to_value(const string &code)
+{
+    return origin_to_value(opposite_to_origin(code));
+}
+
+int complement_to_value(const string &code)
+{
+    return origin_to_value(complement_to_origin(code));
+}

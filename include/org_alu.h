@@ -19,6 +19,10 @@ public:
     void valid_resize(size_t size)override;
     int valid_index()const override;
 
+    string get_acc_sign()const override;
+    string get_mq_sign()const override;
+    string get_x_sign()const override;
+
     bool get_sf_acc()const;
     bool get_sf_mq()const;
     bool get_sf_x()const;

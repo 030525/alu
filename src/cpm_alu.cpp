@@ -53,10 +53,15 @@ static void set_reg(const string & code,deque<char> & reg,bool & OF)
         }
         else
         {
-            OF = true;
             reg[i] = sign;
         }
     }
+
+    if(last > 0) 
+    {
+        OF = true;
+    }
+    else OF = false;
 }
 
 void CPM_ALU::set_acc(const string &code)

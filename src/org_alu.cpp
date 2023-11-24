@@ -24,6 +24,20 @@ int ORG_ALU::valid_index() const
     return ACC.size();
 }
 
+string ORG_ALU::get_acc_sign() const
+{
+    return to_string(int(get_sf_acc()))+get_acc();
+}
+
+string ORG_ALU::get_mq_sign() const
+{
+    return to_string(int(get_sf_mq()))+get_mq();
+}
+
+string ORG_ALU::get_x_sign() const
+{
+    return to_string(int(get_sf_x()))+get_x();
+}
 bool ORG_ALU::get_sf_acc() const
 {
     return SF_ACC;
@@ -67,27 +81,29 @@ static void set_reg(const string & code,deque<char> & reg,bool & OF,bool & SF)
         }
         else
         {
-            OF = true;
             reg[i] = '0';
         }
     }
+
+    if(last > 0) 
+    {
+        OF = true;
+    }
+    else OF = false;
 }
 
 void ORG_ALU::set_acc(const string &code)
 {
-    OF = false;
     set_reg(code,ACC,OF,SF_ACC);
 }
 
 void ORG_ALU::set_x(const string &code)
 {
-    OF = false;
     set_reg(code,X,OF,SF_X);
 }
 
 void ORG_ALU::set_mq(const string &code)
 {
-    OF = false;
     set_reg(code,MQ,OF,SF_MQ);
 }
 
@@ -114,12 +130,12 @@ void ORG_ALU::add()
         if(SF_ACC == true) 
         {
             // get complement ,overflow sign
-            set_acc(origin_to_complement(get_acc()));
+            set_acc(origin_to_complement(get_acc_sign()));
         }
         else if(SF_X == true) 
         {
             //record x,use complement to do add
-            s = get_x();
+            s = get_x_sign();
 
             // get complement ,overflow sign
             set_x(origin_to_complement(s));
@@ -144,16 +160,17 @@ void ORG_ALU::add()
 
     if(to_cpm)
     {
-        SF_ACC = bool((1+overflow) % 2);
+        SF_ACC = ((1+overflow) % 2) ;
+        set_acc(complement_to_origin(get_acc_sign()));
     }
     else
     {
-        if(overflow) OF = true;
+        OF = overflow;
     }
 
     if(SF_X && to_cpm)
     {
-        set_x(complement_to_origin(s));
+        set_x(s);
     }
 
     
@@ -166,33 +183,38 @@ void ORG_ALU::sub()
 
 
 
-PYBIND11_MODULE(ORG_ALU, m) {
+PYBIND11_MODULE(ORG, m) {
     m.doc() = "stimulate origin alu";
-    py::class_<ORG_ALU>(m, "ORG_ALU")
+    py::class_<ORG_ALU>(m, "ORG")
         .def(py::init<size_t>())
-        .def("valid_resize", &ORG_ALU::valid_resize)
-        .def("valid_index",&ORG_ALU::valid_index)
+        .def("resize", &ORG_ALU::valid_resize)
+        .def("index",&ORG_ALU::valid_index)
 
-        .def("get_acc",&ORG_ALU::get_acc)
-        .def("get_mq",&ORG_ALU::get_mq)
-        .def("get_x",&ORG_ALU::get_x)
+        .def("acc",&ORG_ALU::get_acc_sign)
+        .def("mq",&ORG_ALU::get_mq_sign)
+        .def("x",&ORG_ALU::get_x_sign)
 
-        .def("get_cf",&ORG_ALU::get_cf)
-        .def("get_of",&ORG_ALU::get_of)
+        .def("cf",&ORG_ALU::get_cf)
+        .def("of",&ORG_ALU::get_of)
 
-        .def("get_sf_acc",&ORG_ALU::get_sf_acc)
-        .def("get_sf_mq",&ORG_ALU::get_sf_mq)
-        .def("get_sf_x",&ORG_ALU::get_sf_x)
+        .def("sf_acc",&ORG_ALU::get_sf_acc)
+        .def("sf_mq",&ORG_ALU::get_sf_mq)
+        .def("sf_x",&ORG_ALU::get_sf_x)
 
-        .def("set_acc",&ORG_ALU::set_acc)
-        .def("set_mq",&ORG_ALU::set_mq)
-        .def("set_x",&ORG_ALU::set_x)
+        .def("acc",&ORG_ALU::set_acc)
+        .def("mq",&ORG_ALU::set_mq)
+        .def("x",&ORG_ALU::set_x)
         .def("add",&ORG_ALU::add)
         .def("__repr__", [](const ORG_ALU &obj) {
             string s;
-            s = "ACC:"+to_string((obj.get_sf_acc()))+","+obj.get_acc()+"\n"+
-                " MQ:"+to_string((obj.get_sf_mq()))+","+obj.get_mq()+"\n"+
-                "  X:"+to_string((obj.get_sf_x()))+","+obj.get_x()+"\n"+
+            
+            string acc = obj.get_acc_sign();
+            string mq = obj.get_mq_sign();
+            string x = obj.get_x_sign();
+
+            s = "ACC:"+obj.get_acc_sign().insert(1, 1,',')+" , "+to_string(origin_to_value(acc))+"\n"+
+                " MQ:"+obj.get_mq_sign().insert(1, 1,',')+" , "+to_string(origin_to_value(mq))+"\n"+
+                "  X:"+obj.get_x_sign().insert(1, 1,',')+" , "+to_string(origin_to_value(x))+"\n"+
                 " OF:"+to_string((obj.get_of()));
 
             return s;
